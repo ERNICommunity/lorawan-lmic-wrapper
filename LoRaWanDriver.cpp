@@ -19,7 +19,9 @@ LoRaWanDriver::LoRaWanDriver(ILoraWanConfigAdapter* loraWanConfigAdapter /*= 0*/
 , m_dbgCliTopic(new DbgCli_Topic(DbgCli_Node::RootNode(), "lora", "LoRaWan Driver."))
 , m_dbgCliLoRaCfg(new LoRaWanDbgCmd_Configure(this))
 , m_dbgCliSingleChannel(new LoRaWanDbgCmd_SingleChannel(this))
+, m_dbgCliHeartBeat(new LoRaWanDbgCmd_HeartBeat(this))
 , m_isSingleChannel(false)
+, m_isLoRaWanHeartBeat(true)
 , m_txInterval(txInterval)
 {
   s_loRaWanDriver = this;
@@ -38,6 +40,16 @@ void LoRaWanDriver::setIsSingleChannel(bool isSingleChannel /*= true*/)
 bool LoRaWanDriver::getIsSinglechannel()
 {
   return m_isSingleChannel;
+}
+
+void LoRaWanDriver::setIsLoRaWanHeartBeat(bool isLoRaWanHeartBeat)
+{
+  m_isLoRaWanHeartBeat = isLoRaWanHeartBeat;
+}
+
+bool LoRaWanDriver::getIsLoRaWanHeartBeat()
+{
+  return m_isLoRaWanHeartBeat;
 }
 
 unsigned int LoRaWanDriver::getTxInterval()

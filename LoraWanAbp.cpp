@@ -269,17 +269,22 @@ void configuration()
 
 void loop_once()
 {
+  LoRaWanDriver* loRaWanDriver = LoRaWanDriver::getLoRaWanDriver();
+
+  if (loRaWanDriver->getIsLoRaWanHeartBeat())
+  {
     unsigned long now;
     now = millis();
     if ((now & 512) != 0)
     {
-        digitalWrite(13, HIGH);
+      digitalWrite(13, HIGH);
     }
     else
     {
-        digitalWrite(13, LOW);
+      digitalWrite(13, LOW);
     }
-    os_runloop_once();
+  }
+  os_runloop_once();
 }
 
 LoraWanAbp::LoraWanAbp(ILoraWanConfigAdapter* loraWanConfigAdapter /*= 0*/)

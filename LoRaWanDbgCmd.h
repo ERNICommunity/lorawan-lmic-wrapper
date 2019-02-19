@@ -58,4 +58,26 @@ private: // forbidden default functions
 
 //-----------------------------------------------------------------------------
 
+class LoRaWanDbgCmd_HeartBeat : public DbgCli_Command
+{
+public:
+  LoRaWanDbgCmd_HeartBeat(LoRaWanDriver* loRaWanDriver);
+  virtual ~LoRaWanDbgCmd_HeartBeat();
+
+  void execute(unsigned int argc, const char** args, unsigned int idxToFirstArgToHandle);
+
+private:
+  void printUsage();
+
+private:
+  LoRaWanDriver* m_loRaWanDriver;
+
+private: // forbidden default functions
+  LoRaWanDbgCmd_HeartBeat& operator = (const LoRaWanDbgCmd_HeartBeat& src); // assignment operator
+  LoRaWanDbgCmd_HeartBeat(const LoRaWanDbgCmd_HeartBeat& src);              // copy constructor
+  LoRaWanDbgCmd_HeartBeat();                                                // default constructor
+};
+
+//-----------------------------------------------------------------------------
+
 #endif /* LIB_LORAWAN_LORAWANDBGCMD_H_ */

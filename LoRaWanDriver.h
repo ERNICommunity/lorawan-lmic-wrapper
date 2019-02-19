@@ -12,6 +12,7 @@ class DbgCli_Command;
 class DbgCli_Topic;
 class LoRaWanDbgCmd_Configure;
 class LoRaWanDbgCmd_SingleChannel;
+class LoRaWanDbgCmd_HeartBeat;
 
 //-----------------------------------------------------------------------------
 
@@ -86,6 +87,9 @@ public:
   void setIsSingleChannel(bool isSingleChannel = true);
   bool getIsSinglechannel();
 
+  void setIsLoRaWanHeartBeat(bool isLoRaWanHeartBeat);
+  bool getIsLoRaWanHeartBeat();
+
   unsigned int getTxInterval();
 
   DbgCli_Topic* getCliTopic() { return m_dbgCliTopic; }
@@ -99,8 +103,10 @@ private:
   DbgCli_Topic* m_dbgCliTopic;
   LoRaWanDbgCmd_Configure* m_dbgCliLoRaCfg;
   LoRaWanDbgCmd_SingleChannel* m_dbgCliSingleChannel;
+  LoRaWanDbgCmd_HeartBeat* m_dbgCliHeartBeat;
   bool m_isSingleChannel;
-  unsigned int m_txInterval;                                  /// LoRaWan transmit interval [s]
+  bool m_isLoRaWanHeartBeat;                /// Show LoRaWan Heartbeat on built-in LED, true: LED blinks, false: LED not controlled by this component
+  unsigned int m_txInterval;                /// LoRaWan transmit interval [s]
   static LoRaWanDriver* s_loRaWanDriver;
   const static unsigned int s_defaultTxInterval;
 

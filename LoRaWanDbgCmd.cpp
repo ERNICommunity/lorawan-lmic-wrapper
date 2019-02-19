@@ -86,3 +86,42 @@ void LoRaWanDbgCmd_SingleChannel::execute(unsigned int argc, const char** args, 
 
 //-----------------------------------------------------------------------------
 
+LoRaWanDbgCmd_HeartBeat::LoRaWanDbgCmd_HeartBeat(LoRaWanDriver* loRaWanDriver)
+: DbgCli_Command(loRaWanDriver->getCliTopic(), "hb", "Get / set the LoRaWan Driver's heart beat LED operation mode.")
+, m_loRaWanDriver(loRaWanDriver)
+{ }
+
+LoRaWanDbgCmd_HeartBeat::~LoRaWanDbgCmd_HeartBeat()
+{ }
+
+void LoRaWanDbgCmd_HeartBeat::printUsage()
+{
+  TR_PRINTF(m_loRaWanDriver->trPort(), DbgTrace_Level::alert, "Usage: dbg lora hb - get the heart beat LED operation mode\n dbg lora hb <isHeartBeat> {1|0} - set the heart beat LED operation mode (1: active, 0: inactive)");
+}
+
+void LoRaWanDbgCmd_HeartBeat::execute(unsigned int argc, const char** args, unsigned int idxToFirstArgToHandle)
+{
+  if (0 != m_loRaWanDriver)
+  {
+    if (argc - idxToFirstArgToHandle == 0)
+    {
+      TR_PRINTF(m_loRaWanDriver->trPort(), DbgTrace_Level::alert, "Heart beat LED mode is %s", m_loRaWanDriver->getIsLoRaWanHeartBeat() ? "active" : "inactive");
+    }
+    else if (argc - idxToFirstArgToHandle == 1)
+    {
+      bool isHeartBeat = atoi(args[idxToFirstArgToHandle]) > 0;
+      TR_PRINTF(m_loRaWanDriver->trPort(), DbgTrace_Level::alert, "Setting Heart beat LED mode %s", isHeartBeat ? "active" : "inactive");
+      m_loRaWanDriver->setIsLoRaWanHeartBeat(isHeartBeat);
+    }
+    else
+    {
+      {
+        TR_PRINTF(m_loRaWanDriver->trPort(), DbgTrace_Level::alert, "%s\n", getHelpText());
+      }
+      printUsage();
+    }
+  }
+}
+
+//-----------------------------------------------------------------------------
+

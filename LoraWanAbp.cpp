@@ -5,9 +5,8 @@
 
 #include <SPI.h>
 #include <ILoraWanConfigAdapter.h>
-
+#include <ILoraWanTxDataEventAdapter.h>
 #include <ILoraWanRxDataEventAdapter.h>
-
 #include <DbgTracePort.h>
 #include <DbgTraceLevel.h>
 
@@ -63,6 +62,7 @@ void onEvent(ev_t ev)
 {
   LoRaWanDriver* loRaWanDriver = LoRaWanDriver::getLoRaWanDriver();
   ILoraWanRxDataEventAdapter* loRaWanRxDataEventAdapter = loRaWanDriver->loraWanRxDataEventAdapter();
+  ILoraWanTxDataEventAdapter* loRaWanTxDataEventAdapter = loRaWanDriver->loraWanTxDataEventAdapter();
   DbgTrace_Port* trPort = loRaWanDriver->trPort();
 
   TR_PRINTF(trPort, DbgTrace_Level::debug, "LoRaWan onEvent() start (os_getTime() [hal ticks]: %d).", os_getTime());
@@ -104,6 +104,10 @@ void onEvent(ev_t ev)
     case EV_TXCOMPLETE:
       TR_PRINT_STR(trPort, DbgTrace_Level::debug, "EV_TXCOMPLETE (includes waiting for RX windows)");
       m_CounterPeriodicMessage++;
+      if (loRaWanTxDataEventAdapter != 0)
+      {
+        loRaWanTxDataEventAdapter->messageTransmitted();
+      }
       if (LMIC.txrxFlags & TXRX_ACK)
         TR_PRINT_STR(trPort, DbgTrace_Level::debug, "Received ack");
       if (LMIC.dataLen > 0)
@@ -270,18 +274,20 @@ void configuration()
 void loop_once()
 {
   LoRaWanDriver* loRaWanDriver = LoRaWanDriver::getLoRaWanDriver();
-
-  if (loRaWanDriver->getIsLoRaWanHeartBeat())
+  if (0 != loRaWanDriver)
   {
-    unsigned long now;
-    now = millis();
-    if ((now & 512) != 0)
+    if (loRaWanDriver->getIsLoRaWanHeartBeat())
     {
-      digitalWrite(13, HIGH);
-    }
-    else
-    {
-      digitalWrite(13, LOW);
+      unsigned long now;
+      now = millis();
+      if ((now & 512) != 0)
+      {
+        digitalWrite(13, HIGH);
+      }
+      else
+      {
+        digitalWrite(13, LOW);
+      }
     }
   }
   os_runloop_once();

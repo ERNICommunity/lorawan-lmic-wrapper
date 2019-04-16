@@ -4,6 +4,7 @@
 #include <DbgCliTopic.h>
 #include <ILoraWanConfigAdapter.h>
 #include <ILoraWanRxDataEventAdapter.h>
+#include <ILoraWanTxDataEventAdapter.h>
 #include <LoRaWanDbgCmd.h>
 #include <LoRaWanDriver.h>
 
@@ -12,9 +13,11 @@ const unsigned int LoRaWanDriver::s_defaultTxInterval = 15;
 
 LoRaWanDriver::LoRaWanDriver(ILoraWanConfigAdapter* loraWanConfigAdapter /*= 0*/,
                              ILoraWanRxDataEventAdapter* loraWanRxDataEventAdapter /*= 0*/,
+                             ILoraWanTxDataEventAdapter* loraWanTxDataEventAdapter /*= 0*/,
                              unsigned int txInterval /*= s_defaultTxInterval*/)
 : m_loraWanConfigAdapter(loraWanConfigAdapter)
 , m_loraWanRxDataEventAdapter(loraWanRxDataEventAdapter)
+, m_loraWanTxDataEventAdapter(loraWanTxDataEventAdapter)
 , m_trPort(new DbgTrace_Port("lora", DbgTrace_Level::notice))
 , m_dbgCliTopic(new DbgCli_Topic(DbgCli_Node::RootNode(), "lora", "LoRaWan Driver."))
 , m_dbgCliLoRaCfg(new LoRaWanDbgCmd_Configure(this))
@@ -75,6 +78,16 @@ void LoRaWanDriver::setLoraWanRxDataEventAdapter(ILoraWanRxDataEventAdapter* lor
 ILoraWanRxDataEventAdapter* LoRaWanDriver::loraWanRxDataEventAdapter()
 {
   return m_loraWanRxDataEventAdapter;
+}
+
+void LoRaWanDriver::setLoraWanTxDataEventAdapter(ILoraWanTxDataEventAdapter* loraWanTxDataEventAdapter)
+{
+  m_loraWanTxDataEventAdapter = loraWanTxDataEventAdapter;
+}
+
+ILoraWanTxDataEventAdapter* LoRaWanDriver::loraWanTxDataEventAdapter()
+{
+  return m_loraWanTxDataEventAdapter;
 }
 
 DbgTrace_Port* LoRaWanDriver::trPort()

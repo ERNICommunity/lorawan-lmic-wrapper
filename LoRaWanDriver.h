@@ -7,6 +7,7 @@
 
 class ILoraWanConfigAdapter;
 class ILoraWanRxDataEventAdapter;
+class ILoraWanTxDataEventAdapter;
 class DbgTrace_Port;
 class DbgCli_Command;
 class DbgCli_Topic;
@@ -70,6 +71,7 @@ class LoRaWanDriver
 public:
   LoRaWanDriver(ILoraWanConfigAdapter* loraWanConfigAdapter = 0,
                 ILoraWanRxDataEventAdapter* loraWanRxDataEventAdapter = 0,
+                ILoraWanTxDataEventAdapter* loraWanTxDataEventAdapter = 0,
                 unsigned int txInterval = s_defaultTxInterval);
   virtual ~LoRaWanDriver();
   virtual void setPeriodicMessageData(uint8_t* a_Data, uint64_t a_SizeOfData);
@@ -77,10 +79,15 @@ public:
   virtual bool isReadyToRead();
   virtual uint64_t readData(uint8_t* const a_Data, uint64_t a_MaxSizeOfBuffer);
   virtual void loopOnce();
+
   void setLoraWanConfigAdapter(ILoraWanConfigAdapter* loraWanConfigAdapter);
   ILoraWanConfigAdapter* loraWanConfigAdapter();
+
   void setLoraWanRxDataEventAdapter(ILoraWanRxDataEventAdapter* loraWanRxDataEventAdapter);
   ILoraWanRxDataEventAdapter* loraWanRxDataEventAdapter();
+
+  void setLoraWanTxDataEventAdapter(ILoraWanTxDataEventAdapter* loraWanTxDataEventAdapter);
+  ILoraWanTxDataEventAdapter* loraWanTxDataEventAdapter();
 
   virtual void configure(bool isForced = false) = 0;
 
@@ -99,6 +106,7 @@ public:
 private:
   ILoraWanConfigAdapter* m_loraWanConfigAdapter;
   ILoraWanRxDataEventAdapter* m_loraWanRxDataEventAdapter;
+  ILoraWanTxDataEventAdapter* m_loraWanTxDataEventAdapter;
   DbgTrace_Port* m_trPort;
   DbgCli_Topic* m_dbgCliTopic;
   LoRaWanDbgCmd_Configure* m_dbgCliLoRaCfg;

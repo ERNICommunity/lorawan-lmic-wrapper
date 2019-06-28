@@ -9,7 +9,7 @@
 #include <LoRaWanDriver.h>
 
 LoRaWanDriver* LoRaWanDriver::s_loRaWanDriver = 0;
-const unsigned int LoRaWanDriver::s_defaultTxInterval = 15;
+const unsigned int LoRaWanDriver::s_defaultTxInterval = 60;
 
 LoRaWanDriver::LoRaWanDriver(ILoraWanConfigAdapter* loraWanConfigAdapter /*= 0*/,
                              ILoraWanRxDataEventAdapter* loraWanRxDataEventAdapter /*= 0*/,
